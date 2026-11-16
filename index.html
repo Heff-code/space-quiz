@@ -61,6 +61,7 @@ button.opt:disabled{cursor:default}
 @keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-8px)}40%{transform:translateX(8px)}60%{transform:translateX(-6px)}80%{transform:translateX(6px)}}
 .fb{min-height:44px;margin-top:14px;font-weight:600;font-size:14px}
 .fb.good{color:var(--good)}.fb.bad{color:var(--bad)}
+.fact{margin-top:6px;font-weight:400;color:var(--text);overflow-wrap:anywhere}
 .btn{font:inherit;font-weight:600;border:0;border-radius:12px;padding:12px 18px;color:#fff;cursor:pointer;
   background:linear-gradient(135deg,var(--accent),var(--accent2));width:100%;margin-top:6px}
 .btn:hover{filter:brightness(1.08)}
@@ -100,16 +101,16 @@ button.opt:disabled{cursor:default}
 </main>
 <script>
 const Q=[
-["Which was the first artificial satellite launched into orbit?",["Explorer 1","Sputnik 1","Vostok 1","Telstar"],1],
-["Who was the first human to walk on the Moon?",["Buzz Aldrin","Yuri Gagarin","Neil Armstrong","Alan Shepard"],2],
-["Which planet has the largest volcano in the solar system, Olympus Mons?",["Venus","Mars","Earth","Mercury"],1],
-["What is the name of the telescope launched in 1990 that orbits Earth?",["Hubble","Kepler","Spitzer","Chandra"],0],
-["Which spacecraft was the first to leave the solar system's heliosphere?",["Pioneer 10","Voyager 1","New Horizons","Cassini"],1],
-["How many planets in our solar system are classified as gas giants?",["1","2","4","3"],1],
-["Which agency operates the Perseverance rover?",["ESA","JAXA","NASA","Roscosmos"],2],
-["What is the name of the largest moon of Saturn?",["Titan","Europa","Ganymede","Enceladus"],0],
-["Approximately how long does sunlight take to reach Earth?",["8 seconds","8 minutes","8 hours","80 minutes"],1],
-["Which year did humans first land on the Moon?",["1965","1969","1972","1975"],1]
+["Which was the first artificial satellite launched into orbit?",["Explorer 1","Sputnik 1","Vostok 1","Telstar"],1,"Sputnik 1 launched on 4 October 1957 and circled Earth roughly every 96 minutes."],
+["Who was the first human to walk on the Moon?",["Buzz Aldrin","Yuri Gagarin","Neil Armstrong","Alan Shepard"],2,"Armstrong's first step on 20 July 1969 was watched live by an estimated 600 million people."],
+["Which planet has the largest volcano in the solar system, Olympus Mons?",["Venus","Mars","Earth","Mercury"],1,"Olympus Mons is about 22 km high, roughly two and a half times the height of Mount Everest."],
+["What is the name of the telescope launched in 1990 that orbits Earth?",["Hubble","Kepler","Spitzer","Chandra"],0,"Hubble orbits about 540 km above Earth and circles the planet roughly every 95 minutes."],
+["Which spacecraft was the first to leave the solar system's heliosphere?",["Pioneer 10","Voyager 1","New Horizons","Cassini"],1,"Voyager 1 crossed into interstellar space in August 2012 and is now the most distant human-made object."],
+["How many planets in our solar system are classified as gas giants?",["1","2","4","3"],1,"Jupiter and Saturn are the gas giants; Uranus and Neptune are classed as ice giants."],
+["Which agency operates the Perseverance rover?",["ESA","JAXA","NASA","Roscosmos"],2,"Perseverance landed in Jezero Crater on 18 February 2021, carrying the Ingenuity helicopter."],
+["What is the name of the largest moon of Saturn?",["Titan","Europa","Ganymede","Enceladus"],0,"Titan is the only moon known to have a thick atmosphere, and it has lakes of liquid methane and ethane."],
+["Approximately how long does sunlight take to reach Earth?",["8 seconds","8 minutes","8 hours","80 minutes"],1,"Sunlight takes about 8 minutes and 20 seconds to travel the roughly 150 million km to Earth."],
+["Which year did humans first land on the Moon?",["1965","1969","1972","1975"],1,"Apollo 11 landed in July 1969; between 1969 and 1972, twelve people walked on the Moon."]
 ];
 const $=id=>document.getElementById(id);
 let i,score,locked;
@@ -131,8 +132,11 @@ function answer(k){
   bs.forEach(b=>b.disabled=true);
   bs[c].classList.add("correct");
   const fb=$("fb");
-  if(k===c){score++;fb.textContent="🎉 Correct!";fb.classList.add("good")}
-  else{bs[k].classList.add("wrong");fb.textContent="❌ Not quite — the answer is "+Q[i][1][c]+".";fb.classList.add("bad")}
+  const m=document.createElement("div"),f=document.createElement("div");
+  f.className="fact";f.textContent="💡 Did you know? "+Q[i][3];
+  if(k===c){score++;m.textContent="🎉 Correct!";fb.classList.add("good")}
+  else{bs[k].classList.add("wrong");m.textContent="❌ Not quite — the answer is "+Q[i][1][c]+".";fb.classList.add("bad")}
+  fb.append(m,f);
   $("score").textContent=`Score: ${score}`;
   $("fill").style.width=((i+1)/Q.length*100)+"%";$("pb").setAttribute("aria-valuenow",i+1);
   $("next").textContent=i===Q.length-1?"See results":"Next";$("next").classList.remove("hidden");$("next").focus();
